@@ -65,19 +65,10 @@ public class GameOfLife {
      * @return The value of the indicated cell
      */
     public int getState(int row, int col) {
-\        return board[row][col];
+        return board[row][col];
     }
     
     /**
-     * This method will initialize the internal 
-     * representation of the game of life board 
-     * (that is, the field <b>theBoard</b>, 
-     * hereafter, "current board") to the state 
-     * shown in the notes:
-     * <blockquote><pre>
-     *      . . . . . . . . . . . . . . . . . . .
-     *      . . . . . . . . . . . . . . . . . . .
-     *      . . . O . . . . . . . . O O . . . . .
      *      . . . O . . . . . . . . O O . . . . .
      *      . . . . . . . . . . . . . . . . . . .
      *      . . . . . . . . . . . . . . . . . . .
@@ -94,10 +85,8 @@ public class GameOfLife {
      *      . . . . O O . . . . . . . . . . . . .
      *      . . . . . . . . . . . . . . . . . . .
      *      . . . . . . . . . . . . . . . . . . .
-     * </pre></blockquote>
-     * Notice that the upper-left corner is row 1,
-     * column 1, not (0, 0).
      */
+
     public void initializeBoard() {
         // exit if an extremely small board
         if(BOARD_SIZE < 4) return;
@@ -118,8 +107,13 @@ public class GameOfLife {
         // a block
         setAlive(3, 13);
         setAlive(3, 14);
+        setAlive(3, 15);
         setAlive(4, 13);
         setAlive(4, 14);
+        setAlive(4, 15);
+        setAlive(5, 13);
+        setAlive(5, 14);
+        setAlive(5, 15);
         // a blinker
         setAlive(13, 13);
         setAlive(13, 14);
@@ -168,8 +162,8 @@ public class GameOfLife {
     	int birthAcc = 0;
     	int deathAcc = 0;    	
     	
-    	for(int row = 0; row < board.length-1; row++){
-    		for(int column = 0; column < board[0].length-1; column++){
+    	for(int row = 0; row < board.length-1; row++) {
+    		for(int column = 0; column < board[0].length-1; column++) {
     			
 				if(board[row][column] == 1)
 					alive--;	// we do this since the check algorithm includes the home cell, if it's
@@ -177,57 +171,51 @@ public class GameOfLife {
 				
     			// check surroundings to see what happens next. loop boundaries depend on current cell.
 				
-				if(column == 0){
-					for( int checkRow = 0; checkRow < row+2; checkRow++ ){
-    					for( int checkColumn = column; checkColumn < column+2; checkColumn++){
-    						if(board[checkRow][checkColumn] == 1){
+				if (column == 0) {
+					for (int checkRow = 0; checkRow < row+2; checkRow++) {
+    					for (int checkColumn = column; checkColumn < column+2; checkColumn++) {
+    						if (board[checkRow][checkColumn] == 1)
     							alive++;
-    						}
     					}
 					}
-				} else if(column == board[column].length){
-					for( int checkRow = row-1; checkRow < row+1; checkRow++ ){
-    					for( int checkColumn = column-1; checkColumn < column+1; checkColumn++){
-    						if(board[checkRow][checkColumn] == 1){
+				} else if (column == board[column].length) {
+					for (int checkRow = row-1; checkRow < row+1; checkRow++) {
+    					for (int checkColumn = column-1; checkColumn < column+1; checkColumn++) {
+    						if (board[checkRow][checkColumn] == 1)
     							alive++;
-    						}
     					}
 					}
-				} else  if(row == 0){
-    				for( int checkRow = row; checkRow < row+2; checkRow++ ){
-    					for( int checkColumn = column-1; checkColumn < column+2; checkColumn++){
-    						if(board[checkRow][checkColumn] == 1){
+				} else if (row == 0) {
+    				for (int checkRow = row; checkRow < row+2; checkRow++) {
+    					for (int checkColumn = column-1; checkColumn < column+2; checkColumn++) {
+    						if (board[checkRow][checkColumn] == 1)
     							alive++;
-    							
-    						}
     					}    					
     				}
-				} else if(row == board[row].length){
-					for( int checkRow = row-1; checkRow < row+1; checkRow++ ){
-    					for( int checkColumn = column-1; checkColumn < column+2; checkColumn++){
-    						if(board[checkRow][checkColumn] == 1){
+				} else if (row == board[row].length) {
+					for (int checkRow = row-1; checkRow < row+1; checkRow++) {
+    					for (int checkColumn = column-1; checkColumn < column+2; checkColumn++) {
+    						if (board[checkRow][checkColumn] == 1)
     							alive++;
-    						}
     					}
 					}
 				} else {
-					for( int checkRow = row-1; checkRow < row+2; checkRow++ ){
-    					for( int checkColumn = column-1; checkColumn < column+2; checkColumn++){
-    						if(board[checkRow][checkColumn] == 1){
+					for (int checkRow = row-1; checkRow < row+2; checkRow++ ) {
+    					for (int checkColumn = column-1; checkColumn < column+2; checkColumn++) {
+    						if (board[checkRow][checkColumn] == 1)
     							alive++;
-    						}
     					}
 					}
 				}
     				
-    			if(alive < 2 || alive > 4 && board[row][column] == 1){
+    			if (alive < 2 || alive > 4 && board[row][column] == 1) {
     				//kill cell from loneliness or overcrowding
     				death[deathAcc] = row;
     				death[deathAcc+1] = column; 
     				deathAcc+=2;
     				alive = 0; //reset counter
     					
-    			} else if(alive == 3 && board[row][column] == 0){
+    			} else if (alive == 3 && board[row][column] == 0) {
     				//birth cell at board[row][column]    					
     				birth[birthAcc] = row;
     				birth[birthAcc+1] = column;
@@ -239,15 +227,11 @@ public class GameOfLife {
     	
     	// populate board with updated state
     	
-    	for(int i = 0; i < birth.length; i+=2){
+    	for (int i = 0; i < birth.length; i+=2)
     		setAlive(birth[i], birth[i+1]);
-    	}
-    	
 
-    	for(int i = 0; i < death.length; i+=2){
+    	for(int i = 0; i < death.length; i+=2)
     		setDead(death[i], death[i+1]);
-    	}
-
     }
     
     public String toString(){
@@ -255,13 +239,12 @@ public class GameOfLife {
     	String boardAsString = new String();
     	// iterate through array to find alive and dead cells,
     	// concatenate with results.
-    	for(int row = 0; row < board.length; row++){
-    		for(int column = 0; column < board[0].length; column++){
-    			if(board[row][column] == 1){
-    				boardAsString += "O ";
-    			} else {
+    	for (int row = 0; row < board.length; row++) {
+    		for (int column = 0; column < board[0].length; column++) {
+    			if (board[row][column] == 1)
+    				boardAsString += "0 ";
+    			else
     				boardAsString += ". ";
-    			}   			
     		}
     		boardAsString += "\n";
     	}    	
@@ -274,20 +257,13 @@ public class GameOfLife {
      * methods.
      */
     public static void main(String[] args) {
-        // create an instance of GameOfLife
         GameOfLife gol = new GameOfLife();
-        // initialize the board
         gol.initializeBoard();
-        // print a header
         System.out.println("Initial state, Generation 0:");
-        // print the board
         gol.printBoard();
-        for(int i = 0; i < 2; i ++) {
-            // calculate the next generation
+        for (int i = 0; i < 5; i ++) {
             gol.nextGeneration();
-            // print a header
             System.out.println("\nGeneration " + (i + 1) + ":");
-            // print the board
             gol.printBoard();
         }
     }
